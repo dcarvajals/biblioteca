@@ -1,0 +1,49 @@
+<div class="container col-10 mt-2">
+  <strong style="color: red"> La cantidad de préstamos realizados de libros y revistas </strong> <br>
+  <strong> LIBROS: </strong> {{cantLibros}} <br>
+  <strong> REVISTAS: </strong> {{cantRevistas}} <br>
+
+  <hr>
+
+  <strong style="color: red"> Porcentaje de préstamos realizados según la categoría de libros y revista </strong> <br>
+
+  <table class="table table-bordered border table-sm table-striped mt-3">
+    <thead class="table-dark">
+    <tr>
+      <th scope="col">CATEGORIA</th>
+      <th scope="col">PORCENTAJE</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let porcentaje of porcentajes">
+      <td> {{porcentaje['categoria']}} </td>
+      <td> {{porcentaje['porcentaje']}} % </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <hr>
+
+  <strong style="color: red"> Cantidad de estudiantes sancionados. </strong> <br>
+  <strong> ESTUDIANTES SANCIONADOS: </strong> <span>{{estudiantesSancionados}}</span> <br>
+
+  <hr>
+
+  <strong style="color: red"> Total, de libros prestados según el sexo del estudiante. </strong> <br>
+
+  <table class="table table-bordered border table-sm table-striped mt-3">
+    <thead class="table-dark">
+    <tr>
+      <th scope="col">GENERO</th>
+      <th scope="col">CANTIDAD DE PRESTAMOS</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let prestamo_ of prestamosPorGenero">
+      <td> {{prestamo_['sexo'] === 'F' ? 'FEMENINO' : prestamo_['sexo'] === 'M' ? 'MASCULINO' : 'OTROS'}} </td>
+      <td> {{prestamo_['cantidad']}} </td>
+    </tr>
+    </tbody>
+  </table>
+
+</div>

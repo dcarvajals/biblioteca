@@ -1,0 +1,57 @@
+<div id="ohsnap"></div>
+<div class="container col-6 mt-2">
+  <button class="btn btn-success btn-sm rounded-pill" (click)="nuevoItem()"
+          type="button" data-bs-toggle="modal" data-bs-target="#newCategoria"> ✚ Nueva categoria </button>
+
+  <table class="table table-bordered border table-sm table-striped mt-3">
+    <thead class="table-dark">
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Nombre</th>
+      <th scope="col">Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let categoria of categorias">
+      <td> {{categoria.id}} </td>
+      <td> {{categoria.nombre}} </td>
+      <td class="col-1">
+        <div class="dropdown">
+          <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            ⇅ Acciones
+          </button>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" (click)="seleccionarItem(categoria)"
+                   type="button" data-bs-toggle="modal" data-bs-target="#newCategoria"> ✎ Editar</a></li>
+            <li><a class="dropdown-item" (click)="eliminarItem(categoria)"> ✘ Eliminar</a></li>
+          </ul>
+        </div>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="modal fade" id="newCategoria" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Categoria</h1>
+        <button #closeModal type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="regFormCategoria" name="form">
+          <div class="mb-3">
+            <label for="ipt_descripcion" class="form-label">Nombre</label>
+            <input type="text" class="form-control" id="ipt_descripcion" placeholder="" formControlName="nombre"
+                   maxlength="45">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" (click)="guardarCategoria()">Guardar cambios</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,120 @@
+<div id="ohsnap"></div>
+<div class="container col-10 mt-2">
+  <button class="btn btn-success btn-sm rounded-pill" (click)="nuevoItem()"
+          type="button" data-bs-toggle="modal" data-bs-target="#newCategoria"> ✚ Nuevo Libro/Revista
+  </button>
+
+  <table class="table table-bordered border table-sm table-striped mt-3">
+    <thead class="table-dark">
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Categoria</th>
+      <th scope="col">Codigo</th>
+      <th scope="col">Editorial</th>
+      <th scope="col">Nombre</th>
+      <th scope="col">Autor</th>
+      <th scope="col">Publicacion</th>
+      <th scope="col">Tipo</th>
+      <th scope="col">Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let ejemplar of ejemplares">
+      <td> {{ejemplar.id}} </td>
+      <td> {{ejemplar.nom_cat}} </td>
+      <td> {{ejemplar.codigo}} </td>
+      <td> {{ejemplar.editorial}} </td>
+      <td> {{ejemplar.nombre}} </td>
+      <td> {{ejemplar.autor}} </td>
+      <td> {{ejemplar.anio_publicacion}} </td>
+      <td> {{ejemplar.tipo === 'L' ? 'LIBRO' : 'REVISTA'}} </td>
+      <td class="col-1">
+        <div class="dropdown">
+          <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                  aria-expanded="false">
+            ⇅ Acciones
+          </button>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" (click)="seleccionarItem(ejemplar)"
+                   type="button" data-bs-toggle="modal" data-bs-target="#newCategoria"> ✎ Editar</a></li>
+            <li><a class="dropdown-item" (click)="eliminarItem(ejemplar)"> ✘ Eliminar</a></li>
+          </ul>
+        </div>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="modal fade" id="newCategoria" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Libro/Revista</h1>
+        <button #closeModal type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="regForm" name="form">
+          <div class="row">
+            <div class="col-3">
+              <div class="mb-3">
+                <label for="ipt_codigo" class="form-label">Codigo</label>
+                <input type="text" class="form-control" id="ipt_codigo" placeholder="" formControlName="codigo"
+                       maxlength="45" readonly>
+              </div>
+            </div>
+            <div class="col">
+              <div class="mb-3">
+                <label for="slc_categoria" class="form-label">Categoria</label>
+                <select class="form-control" id="slc_categoria" formControlName="id_categoria">
+                  <option value="">---</option>
+                  <option value="{{categoria.id}}" *ngFor="let categoria of categorias">{{categoria.nombre}}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="ipt_editorial" class="form-label">Editorial</label>
+            <input type="text" class="form-control" id="ipt_editorial" placeholder="" formControlName="editorial"
+                   maxlength="45">
+          </div>
+          <div class="mb-3">
+            <label for="ipt_nombre" class="form-label">Nombre</label>
+            <input type="text" class="form-control" id="ipt_nombre" placeholder="" formControlName="nombre"
+                   maxlength="45">
+          </div>
+          <div class="mb-3">
+            <label for="ipt_autor" class="form-label">Autor</label>
+            <input type="text" class="form-control" id="ipt_autor" placeholder="" formControlName="autor"
+                   maxlength="45">
+          </div>
+          <div class="row">
+            <div class="col">
+              <div class="mb-3">
+                <label for="ipt_anio" class="form-label">Año publicacion</label>
+                <input type="number" class="form-control" id="ipt_anio" placeholder="" formControlName="anio_publicacion"
+                       maxlength="45">
+              </div>
+            </div>
+            <div class="col">
+              <div class="mb-3">
+                <label for="slc_tipo" class="form-label">Tipo</label>
+                <select class="form-control" id="slc_tipo" formControlName="tipo">
+                  <option value="">---</option>
+                  <option value="L">LIBRO</option>
+                  <option value="R">REVISTA</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" (click)="guardarCambios()">Guardar cambios</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+

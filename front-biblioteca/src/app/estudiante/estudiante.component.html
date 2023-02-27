@@ -1,0 +1,97 @@
+<div id="ohsnap"></div>
+<div class="container col-10 mt-2">
+  <button class="btn btn-success btn-sm rounded-pill" (click)="nuevoItem()"
+          type="button" data-bs-toggle="modal" data-bs-target="#newCategoria"> ✚ Nuevo Estudiante
+  </button>
+
+  <table class="table table-bordered border table-sm table-striped mt-3">
+    <thead class="table-dark">
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Cedula</th>
+      <th scope="col">Nombres</th>
+      <th scope="col">Apellidos</th>
+      <th scope="col">Sexo</th>
+      <th scope="col">Fecha nacimiento</th>
+      <th scope="col">Estado</th>
+      <th scope="col">Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let estudiante of estudiantes">
+      <td> {{estudiante.id}} </td>
+      <td> {{estudiante.cedula}} </td>
+      <td> {{estudiante.nombres}} </td>
+      <td> {{estudiante.apellidos}} </td>
+      <td> {{estudiante.sexo === 'M' ? 'MASCULINO' : estudiante.sexo === 'F' ? 'FEMENINO' : 'OTROS'}} </td>
+      <td> {{estudiante.fecha_nacimiento.split('T')[0]}} </td>
+      <td style="{{estudiante['dias_sancion'] > 15 || estudiante['dias_sancion'] == null ? 'background: greenyellow;' : estudiante['dias_sancion'] <= 15 ? 'background: pink;' : ''}}">
+        {{estudiante['dias_sancion'] > 15 || estudiante['dias_sancion'] == null  ? 'DISPONIBLE' : estudiante['dias_sancion'] <= 15 ? 'SANCIONADO' : 'SIN ASIGNAR'}} </td>
+      <td class="col-1">
+        <div class="dropdown">
+          <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                  aria-expanded="false">
+            ⇅ Acciones
+          </button>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" (click)="seleccionarItem(estudiante)"
+                   type="button" data-bs-toggle="modal" data-bs-target="#newCategoria"> ✎ Editar</a></li>
+            <li><a class="dropdown-item" (click)="eliminarItem(estudiante)"> ✘ Eliminar</a></li>
+          </ul>
+        </div>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="modal fade" id="newCategoria" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Estudiante</h1>
+        <button #closeModal type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="regForm" name="form">
+          <div class="mb-3">
+            <label for="ipt-cedula" class="form-label">Cedula</label>
+            <input type="text" class="form-control" id="ipt-cedula" placeholder="" formControlName="cedula"
+                   maxlength="10">
+          </div>
+          <div class="mb-3">
+            <label for="ipt-nombres" class="form-label">Nombres</label>
+            <input type="text" class="form-control" id="ipt-nombres" placeholder="" formControlName="nombres"
+                   maxlength="45">
+          </div>
+          <div class="mb-3">
+            <label for="ipt-apellidos" class="form-label">Apellidos</label>
+            <input type="text" class="form-control" id="ipt-apellidos" placeholder="" formControlName="apellidos"
+                   maxlength="45">
+          </div>
+          <div class="mb-3">
+            <label for="slc_sexo" class="form-label">Sexo</label>
+            <select class="form-control" id="slc_sexo" formControlName="sexo">
+              <option value="">---</option>
+              <option value="M">MASCULINO</option>
+              <option value="F">FEMENINO</option>
+              <option value="P">OTROS</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="ipt-fechanacimiento" class="form-label">Fecha de nacimiento</label>
+            <input type="date" class="form-control" id="ipt-fechanacimiento" placeholder="" formControlName="fecha_nacimiento"
+                   maxlength="45">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" (click)="guardarCambios()">Guardar cambios</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+

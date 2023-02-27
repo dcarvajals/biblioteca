@@ -1,0 +1,113 @@
+<div class="container col-10 mt-2">
+  <button class="btn btn-success btn-sm rounded-pill" (click)="nuevoItem()"
+          type="button" data-bs-toggle="modal" data-bs-target="#newCategoria"> ✚ Nuevo prestamo </button>
+
+  <table class="table table-bordered border table-sm table-striped mt-3">
+    <thead class="table-dark">
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Codigo libro</th>
+      <th scope="col">Cedula estudiante</th>
+      <th scope="col">Fecha prestamo</th>
+      <th scope="col">Fecha entrega</th>
+      <th scope="col">Fecha devolucion</th>
+      <th scope="col">Estado</th>
+      <th scope="col">Accion</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let prestamo of prestamos">
+      <td> {{prestamo.id}} </td>
+      <td> {{prestamo.codigo}} </td>
+      <td> {{prestamo.cedula}} </td>
+      <td style="background: lavenderblush"> {{prestamo.fecha_prestamo.split('T')[0]}} </td>
+      <td style="background: aquamarine"> {{prestamo.fecha_entrega.split('T')[0]}} </td>
+      <td> {{prestamo.fecha_devolucion === null ? '' : prestamo.fecha_devolucion.split("T")[0]}} </td>
+      <td [style]="prestamo.estado === 'P' ? 'background: gold' : prestamo.estado === 'D' ? 'background: greenyellow' : ''"
+      > {{prestamo.estado === 'P' ? 'PENDIENTE' : prestamo.estado === 'D' ? 'DEVUELTO' : 'SIN DEFINIR'}} </td>
+      <td class="col-1">
+        <div class="dropdown" *ngIf="prestamo.estado === 'P'">
+          <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            ⇅ Acciones
+          </button>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" (click)="seleccionarItem(prestamo)"
+                   type="button" data-bs-toggle="modal" data-bs-target="#newDevolucion"> ✎ Devolucion</a></li>
+          </ul>
+        </div>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="modal fade" id="newCategoria" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Prestamos</h1>
+        <button #closeModal type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="regForm" name="form">
+          <div class="mb-3">
+            <label for="ipt-estudiante" class="form-label">Estudiante</label>
+            <select class="form-control" id="ipt-estudiante" formControlName="id_estudiante">
+              <option value="">---</option>
+              <option [style]="estudiante['dias_sancion'] > 15 || estudiante['dias_sancion'] == null ? 'display: block' : estudiante['dias_sancion'] <= 15 ? 'display: none' : ''"
+                      *ngFor="let estudiante of estudiantes" value="{{estudiante.id}}">{{estudiante.nombres +' '+ estudiante.apellidos}}</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="ipt-ejemplares" class="form-label">Ejemplares</label>
+            <select class="form-control" id="ipt-ejemplares" formControlName="id_ejemplar">
+              <option value="">---</option>
+              <option [style]="ejemplar.estado === 'S' ? 'display: none;' : ''" *ngFor="let ejemplar of ejemplares" value="{{ejemplar.id}}">{{ejemplar.nom_cat +' '+ ejemplar.codigo +' '+ ejemplar.nombre}}</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="ipt-fechaprestamo" class="form-label">Fecha de prestamo</label>
+            <input type="date" class="form-control" id="ipt-fechaprestamo" placeholder="" formControlName="fecha_prestamo"
+                   maxlength="45">
+          </div>
+          <div class="mb-3">
+            <label for="ipt-fechaentrega" class="form-label">Fecha de entrega</label>
+            <input type="date" class="form-control" id="ipt-fechaentrega" placeholder="" formControlName="fecha_entrega"
+                   maxlength="45">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" (click)="guardarCambios()">Guardar cambios</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="newDevolucion" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel_">Devolucion</h1>
+        <button #closeModalx type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="regFormDev" name="form_">
+          <div class="mb-3">
+            <label class="form-label">Fecha de entrega: </label>
+            <strong> {{prestamo.fecha_entrega.split("T")[0]}} </strong>
+          </div>
+          <div class="mb-3">
+            <label for="ipt-fechadevolucion" class="form-label">Fecha de devolucion</label>
+            <input type="date" class="form-control" id="ipt-fechadevolucion" placeholder="" formControlName="fecha_devolucion">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" (click)="guardarDev()">Guardar cambios</button>
+      </div>
+    </div>
+  </div>
+</div>
